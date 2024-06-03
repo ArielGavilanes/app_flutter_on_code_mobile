@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,6 +12,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool _showPassword = false;
+  final TextEditingController _nombreUsuario = TextEditingController();
+  final TextEditingController _contrasenaUsuario = TextEditingController();
+  String? _loginErrorMessage;
+  final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,29 +38,152 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 padding: const EdgeInsets.all(15),
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: const Color.fromRGBO(30, 30, 30, 1),
-                    borderRadius: BorderRadius.circular(25)),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Iniciar Sesion',
-                      style: TextStyle(color: Colors.white, fontSize: 25),
-                    ),
-                    TextField(
+                  color: const Color.fromRGBO(30, 30, 30, 1),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Form(
+                  key: _loginForm,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Hola, un gusto verte de nuevo!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                        ),
+                      ),
+                      const Divider(
+                        height: 20,
+                        color: Color.fromRGBO(30, 30, 30, 1),
+                      ),
+                      TextFormField(
+                        controller: _nombreUsuario,
+                        style: const TextStyle(color: Colors.white),
+                        cursorColor: Colors.white,
                         decoration: InputDecoration(
-                            label: const Text(
-                              'Usuario',
-                              style: TextStyle(color: Colors.white),
+                          label: const Text(
+                            'Usuario',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          fillColor: const Color.fromARGB(255, 255, 255, 255),
+                          hintText: 'Ingresa tu usuario',
+                          hintStyle: const TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
                             ),
-                            fillColor: const Color.fromARGB(255, 201, 85, 85),
-                            hintText: 'Ingrese su usuario',
-                            hintStyle: const TextStyle(color: Colors.white),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20))))
-                  ],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Este campo es obligatorio';
+                          }
+                          return null;
+                        },
+                      ),
+                      const Divider(
+                        height: 20,
+                        color: Color.fromRGBO(30, 30, 30, 1),
+                      ),
+                      TextFormField(
+                        controller: _contrasenaUsuario,
+                        style: const TextStyle(color: Colors.white),
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          label: const Text(
+                            'Contraseña',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          fillColor: const Color.fromARGB(255, 255, 255, 255),
+                          hintText: 'Ingresa tu contraseña',
+                          hintStyle: const TextStyle(color: Colors.white),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showPassword = !_showPassword;
+                              });
+                            },
+                            icon: Icon(
+                              _showPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        obscureText: !_showPassword,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Este campo es obligatorio';
+                          }
+                          return null;
+                        },
+                      ),
+                      const Divider(
+                        height: 20,
+                        color: Color.fromRGBO(30, 30, 30, 1),
+                      ),
+                      if (_loginErrorMessage != null)
+                        Text(_loginErrorMessage!,
+                            style: const TextStyle(
+                                color: Colors.red, fontSize: 18)),
+                      const Divider(
+                        height: 20,
+                        color: Color.fromRGBO(30, 30, 30, 1),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_loginForm.currentState!.validate()) {
+                            _login();
+                          }
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.white.withOpacity(0.3)),
+                          padding:
+                              MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                  const EdgeInsets.symmetric(
+                                      vertical: 12, horizontal: 24)),
+                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: const BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                          textStyle: MaterialStateProperty.all<TextStyle>(
+                            TextStyle(
+                              color: Colors.black.withOpacity(0.9),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          'Iniciar sesión',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -58,5 +191,28 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _login() async {
+    const String apiUrl = 'http://10.0.2.2:3000/api/auth/login/';
+
+    var payload = {
+      'nombre_usuario': _nombreUsuario.text,
+      'contrasena_usuario': _contrasenaUsuario.text
+    };
+
+    http.Response response = await http.post(Uri.parse(apiUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(payload));
+
+    print(response.body);
+    if (response.statusCode == HttpStatus.ok) {
+      print('login exitoso');
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } else {
+      setState(() {
+        _loginErrorMessage = 'Usuario o contraseña incorrectos';
+      });
+    }
   }
 }
