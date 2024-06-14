@@ -8,7 +8,8 @@ class MyApp extends StatelessWidget {
 
   final _routes = {
     '/': (context) => const LoginPage(),
-    '/dashboard': (context) => const DashboardPage()
+    '/dashboard': (context) => const DashboardPage(),
+    '/register': (context) => const RegisterPage()
   };
   @override
   Widget build(BuildContext context) {
