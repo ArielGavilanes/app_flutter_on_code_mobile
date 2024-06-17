@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/custom-navbar.dart'; 
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -28,6 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
           )
         ],
       ),
+      drawer: const CustomNavbar(), // Aquí se agrega el CustomNavbar
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.white,
@@ -51,7 +53,8 @@ class _DashboardPageState extends State<DashboardPage> {
             label: 'Buscar',
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Configuracion')
+              icon: Icon(Icons.settings, color: Colors.white),
+              label: 'Configuracion'),
         ],
       ),
       backgroundColor: Colors.black,
