@@ -1,3 +1,4 @@
+import 'package:app_flutter_on_code_mobile/components/custom_drawer.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -28,33 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
           )
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.white,
-        backgroundColor: const Color.fromRGBO(255, 255, 255, 0.1),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded, color: Colors.white),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle, color: Colors.white),
-            label: 'Perfil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school_rounded, color: Colors.white),
-            label: 'Tus cursos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_rounded, color: Colors.white),
-            label: 'Buscar',
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Configuracion')
-        ],
-      ),
-      backgroundColor: Colors.black,
+      drawer: const CustomDrawer(),
     );
   }
 }

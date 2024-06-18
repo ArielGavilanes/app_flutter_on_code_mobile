@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -214,9 +215,13 @@ class _LoginPageState extends State<LoginPage> {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(payload));
 
-    print(response.body);
     if (response.statusCode == HttpStatus.ok) {
-      print('login exitoso');
+      var responseBody = jsonDecode(response.body);
+      var token = responseBody['token'];
+      var idRol = responseBody['id_rol'];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      await prefs.setInt('id_rol', idRol);
       Navigator.pushReplacementNamed(context, '/dashboard');
     } else {
       setState(() {
