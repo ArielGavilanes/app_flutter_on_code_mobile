@@ -78,6 +78,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
         ],
       ),
+      drawer: const CustomDrawer(),
     );
   }
 }

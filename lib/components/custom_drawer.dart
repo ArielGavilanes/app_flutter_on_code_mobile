@@ -86,14 +86,14 @@ class CustomDrawer extends StatelessWidget {
                     Navigator.pushReplacementNamed(context, '/profile');
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.home, color: Colors.white),
-                  title: const Text('Inicio',
-                      style: TextStyle(color: Colors.white)),
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, '/dashboard');
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(Icons.home, color: Colors.white),
+                //   title: const Text('Inicio',
+                //       style: TextStyle(color: Colors.white)),
+                //   onTap: () {
+                //     Navigator.pushReplacementNamed(context, '/dashboard');
+                //   },
+                // ),
                 ListTile(
                   leading: const Icon(Icons.search, color: Colors.white),
                   title: const Text('Buscar',

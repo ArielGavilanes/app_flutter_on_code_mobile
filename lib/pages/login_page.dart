@@ -222,7 +222,7 @@ class _LoginPageState extends State<LoginPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', token);
       await prefs.setInt('id_rol', idRol);
-      Navigator.pushReplacementNamed(context, '/dashboard');
+      Navigator.pushReplacementNamed(context, '/profile');
     } else {
       setState(() {
         _loginErrorMessage = 'Usuario o contraseña incorrectos';
