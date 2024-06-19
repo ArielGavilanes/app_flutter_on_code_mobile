@@ -203,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _login() async {
-    const String apiUrl = 'http://10.0.2.2:3000/api/auth/login/';
+    const String apiUrl = 'http://localhost:3000/api/auth/login/';
 
     var payload = {
       'nombre_usuario': _nombreUsuario.text,
